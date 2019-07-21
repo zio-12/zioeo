@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title> zio princess </title>
+<title> princess </title>
 </head>
 <body>
 <%  //자바코드 영역
