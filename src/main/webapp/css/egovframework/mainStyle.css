@@ -1,0 +1,270 @@
+@charset "UTF-8";
+/* 기본 설정 */
+*{
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+    list-style: none;
+}
+.container{
+    width: 1200px;
+    height: 100%;
+    padding: 0 20px;
+}
+li{
+    float: left;
+}
+a{
+    color: inherit;
+    text-decoration: none;
+    display: inline-block;
+}
+body{
+    min-height: 100vh;
+    position: relative;
+}
+/* 버튼 설정 */
+.dropbtn {
+  background-color: #5E90FF;
+  color: white;
+  padding: 13px;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #0080ff;
+}
+/* 버튼 설정 끝 */
+
+/* 테이블 테마 설정 */
+table.type1 {
+    border-collapse: collapse;
+    text-align: left;
+    line-height: 1.5;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin: 5px 5px;
+}
+table.type1 thead th {
+    width: 150px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    color: #fff;
+    background: #0aa9de;
+    margin: 20px 10px;
+}
+table.type1 tbody th {
+    width: 150px;
+    padding: 10px;
+}
+table.type1 td {
+    width: 350px;
+    padding: 10px;
+    vertical-align: top;
+}
+table.type1 .even {
+    background: #fdf3f5;
+}
+
+table.type2 {
+    border-collapse: collapse;
+    text-align: left;
+    line-height: 1.5;
+
+}
+table.type2 thead th {
+	width: 200px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    color: #369;
+    border-bottom: 3px solid #09bfdf;
+}
+table.type2 tbody th {
+    width: 200px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+    background: #f3f6f7;
+}
+table.type2 td {
+    width: 600px;
+    height: auto;
+    padding: 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
+/* 테이블 테마 설정 끝 */
+.clear{
+    clear: both;
+}
+/* //기본 설정 */
+
+/* header */
+header{
+    width: 100%;
+    height: 75px;
+    line-height: 75px;
+    color: #0aa9de;
+}
+header .logo{
+    float: left;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+header .sidemenu{
+    float: right;
+}
+header .sidemenu > li{
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 700;
+}
+header .sidemenu > li:hover{
+    color: blue;
+}
+/* //header */
+
+/* nav */
+nav{
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid #cbcbcb;
+}
+nav .leftMenu{
+    float: left;
+    height: 100%;
+    font-size: 19px;
+    font-weight: bold;
+}
+nav .leftMenu > li{
+    width: auto;
+    padding: 0 20px;
+    height: 100%;
+    line-height: 60px;
+    text-align: center;
+    position: relative;
+}
+nav .leftMenu > li:hover > .dropmenu{
+    visibility: visible;
+}
+nav .leftMenu > li > .dropmenu{
+    display: inline-block;
+    width: 150px;
+    clear: both;
+    position: absolute;
+    top: 59px;
+    left: 0;
+    text-align: left;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.4);
+    visibility: hidden;
+}
+nav .leftMenu > li > .dropmenu > span{
+    width: 100%;
+    display: inline-block;
+    padding-left: 20px;
+    background: #0aa9de;
+    color: white;
+    font-weight: 400;
+}
+nav .leftMenu > li > .dropmenu > span:hover{
+    font-weight: 700;
+}
+
+nav .leftMenu > li:hover{
+    color: #0aa9de;
+    font-weight: 700;
+    border-bottom: 3px solid #0aa9de;
+}
+nav .leftMenu > li.active{
+    color: #0aa9de;
+    font-weight: 700;
+    border-bottom: 3px solid #0aa9de;
+}
+
+nav .rightMenu{
+    float: right;
+}
+nav .rightMenu > li{
+    width: 100px;
+    height: 36px;
+    line-height: 32px;
+    margin-top: 12px;
+    margin-left: 10px;
+
+    padding: 0 10px;
+    text-align: center;
+    
+    color: #0aa9de;
+    font-weight: 700;
+    border: 2px solid #0aa9de;
+    cursor: pointer;
+    border-radius: 50px;
+}
+nav .rightMenu > li:hover, nav .rightMenu > li.active{
+    color: white;
+    background: #0aa9de;
+}
+/* //nav */
+
+/* #section1 */
+section{
+    width: 100%;
+    height: 650px;
+    padding: 30px 0;
+    background: #fafafa;
+}
+
+/* footer */
+footer{
+    width: 100%;
+    height: 115px;
+    border-top: 1px solid #cbcbcb;
+    background: white;
+    font-size: 18px;
+}
+footer > .container{
+    height: auto;
+}
+footer .top{
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #cbcbcb;
+    margin-bottom: 15px;
+}
+footer .top span{
+    height: 100%;
+    line-height: 40px;
+    padding-right: 15px;
+    cursor: pointer;
+}
+footer .top span:hover{
+    font-weight: 700;
+}
+
+footer .copyright{
+    margin-top: 5px;
+}
+/* //footer */
+/* 이거는 글자 정렬할때 p태그에 넣을거 */
+.alignleft {
+    float: left;
+    text-align:left;
+    width:25%;
+}
+.aligncenter {
+    float: left;
+    text-align:center;
+    width:40%;
+}
+.alignright {
+    float: left;
+    text-align:right;
+    width:33.33333%;
+}

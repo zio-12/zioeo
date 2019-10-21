@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nabong.bbs.mapper.PageMapper">
+
+	<resultMap id="user" type="nabong.bbs.vo.PageVo">
+		<result property="userId" column="user_id" />
+		<result property="userPw" column="user_pw" />
+		<result property="userName" column="user_name" />
+		<result property="joinTime" column="user_join_time" />
+		<result property="userIdQustion" column="user_id_question" />
+		<result property="userIdAnswer" column="user_id_answer" />
+		<result property="userJender" column="user_Jender" />
+	</resultMap>
+
+	<resultMap id="board" type="nabong.bbs.vo.PageVo">
+		<result property="boardValue" column="board_value" />
+		<result property="boardNo" column="board_no" />
+		<result property="boardTitle" column="board_title" />
+		<result property="boardText" column="board_text" />
+		<result property="boardUser" column="board_user" />
+		<result property="boardTime" column="board_time" />
+		<result property="boardCount" column="board_view" />
+		<result property="boardDateTime" column="board_datetime" />
+		<result property="fileName" column="file_name" />
+		<result property="fileChangeName" column="file_Change_name" />
+		<result property="filePath" column="file_Path" />
+		<result property="date" column="DATE" />
+	</resultMap>
+
+	<resultMap id="comment" type="nabong.bbs.vo.PageVo">
+		<result property="boardNo" column="board_no" />
+		<result property="commentNo" column="comment_no" />
+		<result property="commentUser" column="comment_user" />
+		<result property="commentText" column="comment_text" />
+		<result property="commentTime" column="comment_time" />
+	</resultMap>
+	<resultMap id ="File" type="nabong.bbs.vo.commonFileVo">
+		<result property="id" column="id" />
+		<result property="fileName" column="file_name" />
+		<result property="fileChangeName" column="file_Change_name" />
+		<result property="filePath" column="file_Path" />
+		<result property="date" column="DATE" />
+	</resultMap>
+	<!-- 페이징 -->
+	<select id ="paging" resultType="com.spring_web.bbs.vo.PagingVO">
+	<![CDATA[ <!-- 이거는 글 다섯개씩 부르게 할라고 -->
+	select *
+	from
+	where
+	board_no between #{writingStart} and #{writingEnd}
+	]]>
+	</select>
+	<select id ="pagingCount" resultType="com.spring_web.bbs.vo.PagingVO">
+	<![CDATA[ <!-- 이거는 글의 총 갯수를 구할라고 -->
+	select count(*)
+	from
+	]]>
+	<include refid="boardType"/>
+	</select>
+	
+	<insert id="joinCheck">
+	<![CDATA[
+		insert
+		into
+		user
+		(user_id, user_pw, user_name, user_id_question, user_id_answer, user_jender)
+		values(#{userId}, #{userPw}, #{userName}, #{userIdQustion}, #{userIdAnswer}, #{userJender})
+		]]>
+	</insert>
+	
+	<select id="joinCheck2" resultMap="user">
+		select user_id
+		from user
+		where user_id=#{userId}
+	</select>
+	
+	
+	<!-- 아이디, 비밀번호 찾기 -->
+	<select id="findId" resultMap="user">
+	<![CDATA[
+		select user_id, user_pw
+		from
+		user
+		where user_id_question = #{userIdQustion} and user_id_answer = #{userIdAnswer}
+		]]>
+	</select>
+	
+	<!-- 게시판-->
+	<select id="getList" resultMap="board">
+	<![CDATA[
+		SELECT *
+		FROM
+		TEST
+		WHERE board_value = #{boardValue}
+		ORDER BY
+		board_no DESC
+		limit 5
+		]]>
+	</select>
+	
+	<!-- c -->
+	<insert id="noticeUpload">
+	<![CDATA[
+		INSERT INTO TEST (
+		board_value, board_title, board_text, board_user, file_name, file_change_name, file_path
+		)VALUES (
+		${boardValue},
+		'${boardTitle}',
+		'${boardText}',
+		'${boardUser}',
+		'${fileName}',
+		'${fileChangeName}',
+		'${filePath}'
+		)
+		]]>
+	</insert>
+	
+	<!-- u -->
+	<update id="noticeUpdate">
+	<![CDATA[
+		UPDATE
+		TEST
+		set
+		board_value = #{boardValue},
+		board_title = #{boardTitle},
+		board_text = #{boardText},
+		board_user = #{boardUser},
+		file_name = #{fileName},
+		date = #{date}
+		where
+		board_no = #{boardNo}
+		]]>
+	</update>
+	
+	<!-- r -->
+	<select id="noticeRead" resultMap="board">
+	<![CDATA[
+		select *
+		from test
+		where board_no = #{boardNo}
+		]]>
+	</select>
+
+	<!-- d -->
+	<delete id="noticeDelete">
+	<![CDATA[
+		delete
+		from
+		test
+		where board_no = #{boardNo}
+		]]>
+	</delete>
+	
+	<!-- 조회수 증가 -->
+	<update id="noticeCount">
+	<![CDATA[
+		UPDATE
+		test
+		set
+		board_view = board_view + 1
+		where board_no =
+		#{boardNo}
+		]]>
+	</update>
+	<!-- 공지사항 끝 -->
+	
+	<!-- 댓글 -->
+	
+	<!-- 댓글 불러오기 R -->
+	<select id="getComment" resultMap="comment">
+		<![CDATA[
+		SELECT board_no, comment_no, comment_user, comment_text,
+		comment_time
+		FROM
+		comment
+		WHERE
+		board_no = #{boardNo}
+		]]>
+	</select>
+
+	<!-- 댓글 추가하기 C -->
+	<insert id="insertComment">
+	<![CDATA[
+		insert
+		into
+		comment
+		(board_no, comment_user,
+		comment_text)
+		values(#{boardNo},#{commentUser}, #{commentText})
+		]]>
+	</insert>
+
+	<!-- 댓글 수정하기 U -->
+	<update id="updateComment">
+	<![CDATA[
+		update
+		comment
+		set
+		comment_text = #{boardTitle}
+		where
+		comment_no = #{commentNo}
+		]]>
+	</update>
+
+	<!-- 댓글 삭제하기 D -->
+	<delete id="deleteComment">
+	<![CDATA[
+		delete
+		from
+		comment
+		where comment_no = #{commentNo}
+		]]>
+	</delete>
+	
+	<!-- 댓글 끝 -->
+	
+	<!-- mapper.java의 메소드 이름과 mapper.xml의 이름이 같으면 매칭됨 -->
+	<select id="testDB" resultMap="user">
+		SELECT user_id
+		FROM user 
+	</select>	
+	
+	<select id="login" resultMap="user">
+		<![CDATA[
+		select *
+		from
+		user
+		where user_id = #{userId} and user_pw = #{userPw}
+		]]>
+	</select>	
+	<select id="getUserInfo" resultMap="user">
+		select *
+		from user 
+		where 
+		user_id=#{id}
+	</select>
+		<!-- 글 목록 불러오기 -->
+	<select id="boardList" resultMap="board">
+	<![CDATA[
+		SELECT * 
+		FROM
+		noticeboard
+		ORDER BY
+		board_no DESC
+		]]>
+	</select>
+	
+	<insert id="fileUploadLog">
+	<![CDATA[
+		INSERT INTO noticeboard (
+		board_title, board_text, board_user, FILE_NAME, FILE_CHANGE_NAME, FILE_PATH
+		)VALUES (
+		'${boardTitle}',
+		'${boardText}',
+		'${boardUser}',
+		'${fileName}',
+		'${fileChangeName}',
+		'${filePath}'
+		)
+		]]>
+	</insert>
+	
+	<select id="test" resultMap="board">
+		SELECT *
+		FROM
+		TEST
+		WHERE board_value = #{boardValue}
+	</select>
+	
+	<select id="fileDownload" resultMap="board">
+		SELECT 
+			board_title, board_text, board_user, FILE_NAME, FILE_CHANGE_NAME, FILE_PATH
+		 FROM TEST WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- 검색 -->
+	<select id="search" resultMap="board">
+		<![CDATA[ 
+		select * 
+		from 
+		test
+		where 
+		board_text like CONCAT('%', #{searchName}, '%') 
+		or board_title like CONCAT('%', #{searchName}, '%')
+		ORDER BY board_no DESC; 
+		]]>
+	</select>
+	
+	<!-- <select id="searchList" resultMap="board">
+
+         SELECT *
+		FROM
+		TEST where search
+		
+         <trim prefix="WHERE" prefixOverrides="AND|OR">
+
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <choose>jsp <form에 있는 아이디랑 이름이 같아야됨~~
+                    <when test="searchNo == '0'.toString()">
+                    </when>
+                    <when test="searchNo == '1'.toString()">
+                    AND board_user LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <when test="searchNo == '2'.toString()">
+                    AND board_title LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <when test="searchNo == '3'.toString()">
+                    AND board_text LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <when test="searchNo == '4'.toString()">
+                    AND board_title LIKE '%' || #{searchKeyword} || '%'
+                    OR board_text LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                </choose>
+            </if>
+            AND BUL_WIRT.BBS_NUM = #{boardNo}
+         </trim>         
+         </select> -->
+	
+</mapper>
