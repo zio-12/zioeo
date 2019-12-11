@@ -66,18 +66,18 @@ public class PageServiceImpl extends EgovAbstractServiceImpl implements PageServ
 	@Override
 	public void insertNoticeService(PageVo vo) throws Exception {
 		String filePath = "locaition"; //이거 초기화 해줘야지 됨
-		UUID uuid = UUID.randomUUID();
+		UUID uuid = UUID.randomUUID(); // 랜덤한 이름
 		filePath = "C:\\egovframework\\upload/";
 
 		MultipartFile file = vo.getMpfile();
-		String orgFileNm = file.getOriginalFilename();
+		String orgFileNm = file.getOriginalFilename(); //원래 파일이름
 //		String fileExt = orgFileNm.substring(orgFileNm.lastIndexOf('.') + 1);
 //		String fileName = orgFileNm.substring(0, orgFileNm.lastIndexOf('.'));
 
 		//String fullFileName = fileName + "_" + new SimpleDateFormat("yyyyMMddhhmm").format(new Date()) + "." + fileExt;
 
 		//System.out.println(fullFileName);
-		String fullFileName = uuid.toString() + "_" + orgFileNm;
+		String fullFileName = uuid.toString() + "_" + orgFileNm; // 최종 파일 이름은 랜덤한 이름 + 원래 파일이름 으로 저장
 		
 //		vo.setFileName(orgFileNm);
 //		vo.setFileChangeName(fullFileName);

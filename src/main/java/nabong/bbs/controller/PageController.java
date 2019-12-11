@@ -216,6 +216,7 @@ public class PageController {
 	public String noticeWrite(String check, HttpSession session, Model mv) throws Exception {
 		check = "write";
 		if (session.getAttribute("userId") != null) {
+			
 			mv.addAttribute("check", check);
 			return "write";
 		} else {
@@ -255,13 +256,15 @@ public class PageController {
 		if (requestUrl.contains("localhost") || requestUrl.contains("127.0.0.1")) {
 			isLocal = true;
 		}
+		//파일정책 정하기
 
 		while (itr.hasNext()) {
 			MultipartFile mpf = req.getFile(itr.next());
-
+			long fileSize = mpf.getSize();
 			vo.setMpfile(mpf); // 파일
 			if (check.equals(string)) {
 				System.out.println("noticeWriteCheck : write " + vo.getBoardValue());
+				System.out.println("파일 크기 : " + fileSize);
 				pageService.insertNoticeService(vo);
 				return "redirect:notice.do?boardValue=" + vo.getBoardValue();
 			} else {
@@ -311,7 +314,7 @@ public class PageController {
 
 		return "Upload";
 	}
-
+	//파일 업로드 할때
 	@RequestMapping("/fileUpload.do")
 	public String fileUploadTest(MultipartHttpServletRequest req, ModelAndView mv) throws Exception {
 
@@ -344,36 +347,26 @@ public class PageController {
 	public String bbsFileDownload(HttpServletResponse response, @ModelAttribute("pageVo") PageVo pageVo,
 			// 글번호
 			@RequestParam(required = true, value = "boardNo") int boardNo, ModelMap model) throws Exception {
-		// AtchFileVO가 파일명, 경로, 크기 이런거 들어있는 Vo
+		// PageVo가 파일명, 경로, 크기 이런거 들어있는 Vo
 		PageVo fileInfo = new PageVo();
 		// 어떤글에 있는 파일인가 찾기위해서 wirtNum
 		fileInfo.setBoardNo(boardNo);
 		// 첨부파일 DB정보 가지고 오는거
 		pageVo = pageService.fileDownload(fileInfo);
-		System.out.println("1");
 		byte[] fileByte;
 		// atchFileVO.getFilePst() 저 부분에 저장경로 적어주면됨
-		System.out.println("22");
 		System.out.println(pageVo.getFilePath());
 		fileByte = FileUtils.readFileToByteArray(new File(pageVo.getFilePath()));
 		System.out.println(fileByte);
-		System.out.println("2");
 		response.setContentType("application/octet-stream");
-		System.out.println("3");
 		response.setContentLength(fileByte.length);
-		System.out.println("4");
 		// encode 안에는 어떤 파일명으로 다운받을지, 저장할때 파일명이 변경되서 원래 이름 정보도 저장해서 그 이름으로 다운받게 함
 		response.setHeader("Content-Disposition",
 				"attachment; fileName=\"" + URLEncoder.encode(pageVo.getFileName(), "UTF-8") + "\";");
-		System.out.println("5");
 		response.setHeader("Content-Transfer-Encoding", "binary");
-		System.out.println("6");
 		response.getOutputStream().write(fileByte);
-		System.out.println("7");
 		response.getOutputStream().flush();
-		System.out.println("8");
 		response.getOutputStream().close();
-		System.out.println("9");
 		return "redirect:read.do?boardNo=" + boardNo;
 	}
 

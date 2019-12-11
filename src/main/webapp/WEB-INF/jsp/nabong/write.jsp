@@ -9,6 +9,41 @@
 <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="/css/egovframework/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript">
+function checkFile(el){ //파일 용량 체크
+	//파일 정보 얻기
+	var file = el.files;
+	var fileName = file[0].name;
+	//파일 확장자 확인하기
+	var fileLen = fileName.length;
+	var fileCom = fileName.lastIndexOf('.');
+	var fileExt = fileName.substring(fileCom, fileLen).toLowerCase();
+	var arrayExt = new Array(".hwp", ".xlsx", ".xls", ".ppt", ".pptx", ".pdf", ".gif", ".jpg", ".png", ".txt");
+	var result;
+	/* console.log() f12눌러서 콘솔 누르면 거기에 무슨값이 있는지 뜸 */
+	//file[0].size 는 파일 용량 정보 .name은 파일 이름
+	if(file[0].size > 1024 * 1024 * 10 ){ //용량을 초과했을 ㄸㅐ
+		alert('10MB 이하 파일만 등록할 수 있습니다.\n\n 현재파일 용량 : ' + (Math.round(file[0].size / 1024 / 1024 * 100) / 100) + 'MB');
+		el.outerHTML = el.outerHTML;
+		}else {
+			for(var i = 0; i < arrayExt.length; i++){
+				//Object.is(a,b) 는 두개가 같은지 판단해주는거임
+				if(Object.is(fileExt, arrayExt[i])){
+					console.log(fileExt, arrayExt[i], i);
+					break;
+				}else{
+					if(i == (arrayExt.length - 1)){
+						alert('hwp, xls, ppt, pdf, gif, jpg, png, txt 파일만 올릴 수 있습니다 \n\n 현재파일 확장자 : ' + fileExt);
+						console.log(fileExt, arrayExt[i], i);
+						el.outerHTML = el.outerHTML;
+						return -1;
+					}
+				}
+			}
+
+		}
+}
+</script>
 </head>
 <body>
 <!-- header ------------------------------------------ -->
@@ -80,7 +115,8 @@
 							</tr>
 							<tr>
 								<th><b>파일첨부</b></th>
-								<th><input type="file" name="file"></th>
+								<th><input type="file" name="file" onchange="javascript:checkFile(this);"><br>
+								(10MB이하, hwp, xlsx, pptx, pdf, gif, jpg, png, txt파일 가능)</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -105,6 +141,7 @@
 				</div>
 		</section>
 <script type="text/javascript">
+
 function Back() { //돌아가기 버튼
 	var bool = confirm('돌아가시겠습니까? 지금까지 작성한 글은 저장되지 않습니다!');
 	if (bool == true) {

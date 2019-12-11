@@ -7,6 +7,14 @@
     <title>페이지 제작</title>
     <link type="text/css" rel="stylesheet" href="/css/egovframework/loginStyle.css">
      <link type="text/css" rel="stylesheet" href="/css/egovframework/mainStyle.css">
+     <script type="text/javascript">
+        function popUp(){
+            var url = "popup.html";
+            var name = "popup test";
+            var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+            window.open(url, name, option);
+        }
+    </script>
 </head>
 <body> 
 <!-- header ------------------------------------------ -->
@@ -28,6 +36,7 @@
                         <form action="loginCheck.do" method="post">
                             <input type="text" name="userId" placeholder="아이디">
                             <input type="password" name="userPw" placeholder="비밀번호">
+                            <a href="javascript:popUp();">팝업</a>
                             <c:choose>
                             	<c:when test="${check eq 'false' }">
                             	<br><p style="color: red">아이디 또는 비밀번호를 확인하세요!</p>
